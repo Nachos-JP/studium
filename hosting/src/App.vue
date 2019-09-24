@@ -3,27 +3,43 @@
     <v-navigation-drawer
       app
       v-model="drawer"
-      bottom
-      temporary
+      clipped
     >
-      <v-list rounded>
-        <v-list-item-group v-model="item" color="primary">
-          <v-list-item
-            v-for="(item, i) in items"
-            :key="i"
-          >
-            <v-list-item-icon>
-              <v-icon v-text="item.icon"></v-icon>
-            </v-list-item-icon>
-            <v-list-item-content>
-              <v-list-item-title v-text="item.text"></v-list-item-title>
-            </v-list-item-content>
-          </v-list-item>
-        </v-list-item-group>
+      <v-list-item>
+        <v-list-item-avatar>
+          <v-img src="https://randomuser.me/api/portraits/men/85.jpg"></v-img>
+        </v-list-item-avatar>
+
+        <v-list-item-title>John Leider</v-list-item-title>
+
+      </v-list-item>
+
+      <v-divider></v-divider>
+
+      <v-list dense>
+        <v-list-item v-for="item in items" :key="item.title" link>
+          <v-list-item-icon>
+            <v-icon>{{ item.icon }}</v-icon>
+          </v-list-item-icon>
+
+          <v-list-item-content>
+            <v-list-item-title>{{ item.title }}</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
       </v-list>
     </v-navigation-drawer>
-    <v-app-bar app>
-      <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
+
+    <v-app-bar
+      app
+      flat
+      dense
+      clipped-left
+    >
+      <v-app-bar-nav-icon
+        @click.stop="drawer=!drawer"
+        v-if="!isBreak"
+      >
+      </v-app-bar-nav-icon>
       <v-toolbar-title class="headline">
         <span>TITLE</span>
       </v-toolbar-title>
@@ -48,17 +64,20 @@ export default {
     HelloWorld,
   },
   data: () => ({
-    drawer: null,
+    drawer: true,
     item: 1,
     items: [
-      {text: "Real-Time", icon: "mdi-clock"},
-      {text: "Audience", icon: "mdi-account"},
-      {text: "Conversions", icon: "mdi-flag"},
+      {title: "Home", icon: "mdi-home-city"},
+      {title: "My Account", icon: "mdi-account"},
+      {title: "Users", icon: "mdi-account-group-outline"},
     ],
   }),
   computed: {
     auth(){
       return this.$store.state.auth;
+    },
+    isBreak(){
+      return this.$vuetify.breakpoint.lg;
     },
   },
 };
