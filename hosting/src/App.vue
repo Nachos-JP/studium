@@ -2,6 +2,7 @@
   <v-app>
     <v-navigation-drawer
       app
+      v-if="auth"
       v-model="drawer"
       clipped
     >
@@ -44,7 +45,7 @@
         <span>TITLE</span>
       </v-toolbar-title>
       <v-spacer></v-spacer>
-      <v-btn text v-if="!auth">SIGN IN</v-btn>
+      <v-btn text v-if="!auth" @click="login">SIGN IN</v-btn>
       <v-btn text v-if="!auth">SIGN UP</v-btn>
       <v-btn text v-if="auth">SIGN OUT</v-btn>
     </v-app-bar>
@@ -56,6 +57,7 @@
 </template>
 
 <script>
+import * as firebase from "firebase/app";
 import HelloWorld from "./components/HelloWorld";
 
 export default {
@@ -78,6 +80,19 @@ export default {
     },
     isBreak(){
       return this.$vuetify.breakpoint.lg;
+    },
+  },
+  methods: {
+    login(){
+      const provider = new firebase.auth.GoogleAuthProvider();
+      firebase.auth().signInWithPopup(provider).then(result => {
+        console.log(result.user)
+        // router.push('/success')
+      }).catch(error => {
+        console.log(error)
+        // this.errorMessage = error.message
+        // this.showError = true
+      })
     },
   },
 };
